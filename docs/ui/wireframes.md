@@ -1,64 +1,71 @@
-# UI / Wireframes
+Слушатель
 
-## Экраны системы
+`/login`→`/courses`(Успешный вход)
 
-| Экран | Роль | Роут | Описание |
-|-------|------|------|----------|
-| Мои курсы | Слушатель | `/my-courses` | Список назначенных курсов с прогрессом |
-| Просмотр курса | Слушатель | `/courses/:id` | Программа курса, список уроков |
-| Прохождение теста | Слушатель | `/tests/:id` | Вопросы, ответы, отправка |
-| Редактор курса | Автор | `/courses/:id/edit` | Создание/редактирование курса и уроков |
-| Назначение курса | Координатор | `/assignments/new` | Выбор курса, группы, дедлайна |
-| Отчёт по курсу | Координатор | `/reports` | Статусы участников, агрегаты |
+`/courses`→`/courses/:courseId`(Клик по карточке курса)
 
-## Привязка экранов к эндпоинтам
+`/courses/:courseId`→`/courses/:courseId/lessons/:lessonId/test`(Клик «Начать тест»)
 
-### Мои курсы (Слушатель)
+`/courses/:courseId/lessons/:lessonId/test`→`/courses/:courseId`(Тест отправлен — показ результата)
 
-```
-GET /users/me/enrollments?page=1&size=20
-```
+`/courses`→`/notifications`(Клик по колокольчику)
 
-Показывает: название курса, прогресс (3/5 уроков), статус, дедлайн.
+`/notifications`→`/courses/:courseId`(Клик по уведомлению)
 
-### Просмотр курса (Слушатель)
 
-```
-GET /courses/{courseId}/lessons
-GET /lessons/{lessonId}
-POST /lessons/{lessonId}/progress
-```
 
-### Прохождение теста (Слушатель)
+Автор
 
-```
-GET /tests/{testId}
-POST /tests/{testId}/attempts
-```
+`/login`→`/author/courses`(Успешный вход)
 
-### Редактор курса (Автор)
+`/author/courses`→`/author/courses/new`(Кнопка «Создать курс»)
 
-```
-POST /courses
-PUT /courses/{courseId}
-POST /courses/{courseId}/lessons
-PUT /lessons/{lessonId}
-POST /courses/{courseId}/publish
-```
+`/author/courses/new`→`/author/courses/:courseId/edit`(Курс создан — редактор)
 
-### Назначение курса (Координатор)
+`/author/courses/:courseId/edit`→`/author/courses`(Публикация курса)
 
-```
-GET /courses  (опубликованные)
-GET /groups
-POST /assignments
-```
+`/author/courses`→`/author/reports`(Клик «Отчёты по моим курсам»)
 
-### Отчёт (Координатор)
 
-```
-GET /reports?courseId=X&groupId=Y&page=1&size=50
-GET /reports/summary?courseId=X&groupId=Y
-```
 
-> Интерактивные макеты (wireframes) в формате React JSX хранятся в отдельном файле `MiniLMS_Wireframes.jsx`.
+Координатор
+
+`/login`→`/coordinator/dashboard`(Успешный вход)
+
+`/coordinator/dashboard`→`/coordinator/assignments/new`(Кнопка «Назначить курс»)
+
+`/coordinator/assignments/new`→`/coordinator/reports`(Успешное назначение)
+
+`/coordinator/dashboard`→`/coordinator/reports`(Клик «Отчёты»)
+
+`/coordinator/dashboard`→`/coordinator/groups`(Управление группами)
+
+
+
+### Источники данных (endpoints)
+
+|Экран|Элемент/Действие|Метод|Endpoint|Описание|
+|-|-|-|-|-|
+|Мои курсы|Список курсов|GET|`/users/me/enrollments`|Назначенные курсы с прогрессом|
+|Мои курсы|Счётчик уведомлений|GET|`/notifications?unread=true`|Количество непрочитанных|
+|Прохождение курса|Программа курса|GET|`/courses/:courseId`|Курс, уроки, прогресс|
+|Прохождение курса|Контент урока|GET|`/courses/:courseId/lessons/:lessonId`|Текст, вложения, ссылки|
+|Прохождение курса|Кнопка «Пройден»|POST|`/courses/:courseId/lessons/:lessonId/complete`|Отметить урок пройденным|
+|Прохождение теста|Вопросы теста|GET|`/tests/:testId`|Вопросы, варианты, maxAttempts, attemptsLeft|
+|Прохождение теста|Кнопка «Отправить»|POST|`/tests/:testId/attempts`|Отправка ответов + X-Idempotency-Key|
+|Редактор курса|Данные курса|GET|`/author/courses/:courseId`|Курс + уроки + тесты|
+|Редактор курса|Сохранить курс|PUT|`/author/courses/:courseId`|Обновить название, описание|
+|Редактор курса|Добавить урок|POST|`/author/courses/:courseId/lessons`|Создать новый урок|
+|Редактор курса|Редактировать урок (✎)|PUT|`/author/lessons/:lessonId`|Обновить контент, порядок, вложения|
+|Редактор курса|Удалить урок (✕)|DELETE|`/author/lessons/:lessonId`|Удалить урок из курса|
+|Редактор курса|Добавить тест|POST|`/author/lessons/:lessonId/tests`|Создать тест к уроку|
+|Редактор курса|Опубликовать|POST|`/author/courses/:courseId/publish`|Сменить статус на «Опубликован»|
+|Редактор курса|Загрузка файла|POST|`/files/upload`|Загрузить вложение (multipart/form-data)|
+|Назначение курса|Список курсов|GET|`/courses?status=published`|Опубликованные курсы|
+|Назначение курса|Список групп|GET|`/groups`|Группы координатора|
+|Назначение курса|Кнопка «Назначить»|POST|`/assignments`|courseId, groupId, startDate, deadline|
+|Отчёт|Таблица прогресса|GET|`/reports?courseId=X&groupId=Y&page=1&size=50`|Статусы пользователей + пагинация|
+|Отчёт|Агрегаты|GET|`/reports/summary?courseId=X&groupId=Y`|Начали / завершили / просрочили|
+|Отчёт|Фильтр по статусу|GET|`/reports?courseId=X&groupId=Y&status=overdue`|Фильтрация по статусу|
+
+> Интерактивные макеты (wireframes) хранятся в интераутивной доске по ссылке [https://unidraw.io/app/board/6657e9b3c0bf111200c3?allow_guest=true](https://unidraw.io/app/board/6657e9b3c0bf111200c3?allow_guest=true).
