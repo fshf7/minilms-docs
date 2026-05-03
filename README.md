@@ -16,6 +16,8 @@ docs/
 │   └── nonfunctional-requirements.md # Нефункциональные требования
 ├── architecture/
 │   ├── data-storage.md               # Выбор технологий хранения данных
+│   ├── async-interactions.md         # «Асинхронное взаимодействие»
+│   ├── platformization.md            # «Платформизация MiniLMS»
 │   └── erd.md                        # Модель данных (ERD)
 ├── api/
 │   └── openapi.yaml                  # OpenAPI-спецификация REST API
