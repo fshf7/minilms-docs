@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+title: Sequence — UC-06
+---
 # Sequence-диаграмма — UC-06: Назначение курса группе
 
 ## Диаграмма

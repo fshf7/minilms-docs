@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+title: Обзор API
+---
 # API — Обзор
 
 ## Общая информация

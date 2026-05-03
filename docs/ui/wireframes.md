@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+title: Макеты экранов
+---
 Слушатель
 
 `/login`→`/courses`(Успешный вход)

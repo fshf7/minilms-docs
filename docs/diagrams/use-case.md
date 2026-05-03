@@ -1,3 +1,7 @@
+---
+sidebar_position: 2
+title: Use-case
+---
 # Use Case — Диаграмма прецедентов
 
 ## Диаграмма

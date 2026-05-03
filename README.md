@@ -1,47 +1,41 @@
-# MiniLMS — Техническая документация
+# Website
 
-Техническая документация платформы мини-курсов и тестов **MiniLMS**.
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
-## О проекте
+## Installation
 
-MiniLMS — веб-система, где можно быстро собрать короткий курс (уроки + тесты), назначить его группе людей и видеть прогресс/результаты в одном месте.
-
-## Структура документации
-
-```
-docs/
-├── requirements/
-│   ├── concept.md                    # Концепция продукта
-│   ├── functional-requirements.md    # Функциональные требования (Use Cases)
-│   └── nonfunctional-requirements.md # Нефункциональные требования
-├── architecture/
-│   ├── data-storage.md               # Выбор технологий хранения данных
-│   ├── async-interactions.md         # «Асинхронное взаимодействие»
-│   ├── platformization.md            # «Платформизация MiniLMS»
-│   └── erd.md                        # Модель данных (ERD)
-├── api/
-│   └── openapi.yaml                  # OpenAPI-спецификация REST API
-├── diagrams/
-│   └── sequence-diagrams.md          # Sequence-диаграммы (PlantUML)
-templates/
-├── architecture-overview.md          # Шаблон: обзор архитектуры
-├── adr-template.md                   # Шаблон: Architecture Decision Record
-└── algorithm-description.md          # Шаблон: описание алгоритма
+```bash
+yarn
 ```
 
-## Стек документации
+## Local Development
 
-| Слой | Инструмент |
-|------|------------|
-| Формат | Markdown |
-| Редактор | VS Code |
-| Версионирование | Git + GitHub |
-| API-документация | OpenAPI 3.0 (YAML) |
-| Диаграммы | PlantUML |
+```bash
+yarn start
+```
 
-## Как работать с документацией
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-1. Клонировать репозиторий: `git clone <url>`
-2. Открыть в VS Code
-3. Вносить изменения → коммитить → пушить
-4. API-спецификацию можно просмотреть через [Swagger Editor](https://editor.swagger.io/)
+## Build
+
+```bash
+yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+## Deployment
+
+Using SSH:
+
+```bash
+USE_SSH=true yarn deploy
+```
+
+Not using SSH:
+
+```bash
+GIT_USER=<Your GitHub username> yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
