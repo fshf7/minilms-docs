@@ -68,4 +68,4 @@
 |Отчёт|Агрегаты|GET|`/reports/summary?courseId=X&groupId=Y`|Начали / завершили / просрочили|
 |Отчёт|Фильтр по статусу|GET|`/reports?courseId=X&groupId=Y&status=overdue`|Фильтрация по статусу|
 
-> Интерактивные макеты (wireframes) хранятся в интераутивной доске по ссылке [https://unidraw.io/app/board/6657e9b3c0bf111200c3?allow_guest=true](https://unidraw.io/app/board/6657e9b3c0bf111200c3?allow_guest=true).
+> Макеты (wireframes) хранятся в интерактивной доске по ссылке [https://unidraw.io/app/board/6657e9b3c0bf111200c3?allow_guest=true](https://unidraw.io/app/board/6657e9b3c0bf111200c3?allow_guest=true).
