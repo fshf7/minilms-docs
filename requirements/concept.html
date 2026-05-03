@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="ru" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-requirements/concept" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.10.1">
+<title data-rh="true">Концепция продукта | MiniLMS Docs</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://fshf7.github.io/minilms-docs/requirements/concept"><meta data-rh="true" property="og:locale" content="ru"><meta data-rh="true" name="docusaurus_locale" content="ru"><meta data-rh="true" name="docsearch:language" content="ru"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Концепция продукта | MiniLMS Docs"><meta data-rh="true" name="description" content="MiniLMS — платформа мини-курсов и тестов"><meta data-rh="true" property="og:description" content="MiniLMS — платформа мини-курсов и тестов"><link data-rh="true" rel="icon" href="/minilms-docs/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://fshf7.github.io/minilms-docs/requirements/concept"><link data-rh="true" rel="alternate" href="https://fshf7.github.io/minilms-docs/requirements/concept" hreflang="ru"><link data-rh="true" rel="alternate" href="https://fshf7.github.io/minilms-docs/requirements/concept" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Концепция продукта","item":"https://fshf7.github.io/minilms-docs/requirements/concept"}]}</script><script src="https://cdn.jsdelivr.net/npm/docusaurus-plugin-drawio/viewer.min.js"></script><link rel="stylesheet" href="/minilms-docs/assets/css/styles.159434f6.css">
+<script src="/minilms-docs/assets/js/runtime~main.d261dfdf.js" defer="defer"></script>
+<script src="/minilms-docs/assets/js/main.38e977b2.js" defer="defer"></script>
+</head>
+<body>
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||"light"),document.documentElement.setAttribute("data-theme-choice",t||"light")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Перейти к основному содержимому"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Перейти к основному содержимому</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Переключить навигационную панель" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/minilms-docs/"><b class="navbar__title text--truncate">MiniLMS Docs</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/minilms-docs/intro">Документация</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/fshf7/minilms-docs" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Переключение между темным и светлым режимом (сейчас используется system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Прокрутка к началу" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/minilms-docs/intro"><span title="Введение" class="linkLabel_WmDU">Введение</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/minilms-docs/requirements/concept"><span title="📋 Требования" class="categoryLinkLabel_W154">📋 Требования</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/minilms-docs/requirements/concept"><span title="Концепция продукта" class="linkLabel_WmDU">Концепция продукта</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/minilms-docs/requirements/functional"><span title="Функциональные требования" class="linkLabel_WmDU">Функциональные требования</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/minilms-docs/requirements/non-functional"><span title="Нефункциональные требования" class="linkLabel_WmDU">Нефункциональные требования</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/minilms-docs/requirements/stakeholders"><span title="Стейкхолдеры и RACI" class="linkLabel_WmDU">Стейкхолдеры и RACI</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/minilms-docs/architecture/overview"><span title="🏗️ Архитектура" class="categoryLinkLabel_W154">🏗️ Архитектура</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/minilms-docs/data/erd"><span title="🗄️ Модель данных" class="categoryLinkLabel_W154">🗄️ Модель данных</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/minilms-docs/ui/wireframes"><span title="🖥️ UI / Wireframes" class="categoryLinkLabel_W154">🖥️ UI / Wireframes</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/minilms-docs/api/api-overview"><span title="🔌 API" class="categoryLinkLabel_W154">🔌 API</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/minilms-docs/diagrams/sequence-uc06"><span title="📊 Диаграммы" class="categoryLinkLabel_W154">📊 Диаграммы</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/minilms-docs/templates/adr-template"><span title="📝 Шаблоны" class="categoryLinkLabel_W154">📝 Шаблоны</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Навигационная цепочка текущей страницы"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Главная страница" class="breadcrumbs__link" href="/minilms-docs/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">📋 Требования</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Концепция продукта</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">Содержание этой страницы</button></div><div class="theme-doc-markdown markdown"><header><h1>Название проекта</h1></header>
+<p><strong>MiniLMS — платформа мини-курсов и тестов</strong>
+Веб-система, где можно быстро собрать короткий курс (уроки + тесты), назначить его группе людей и видеть прогресс/результаты в одном месте.</p>
+<h1>Бизнес-требования</h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-описание-проблемы">1. Описание проблемы<a href="#1-описание-проблемы" class="hash-link" aria-label="Прямая ссылка на 1. Описание проблемы" title="Прямая ссылка на 1. Описание проблемы" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="проблема">Проблема<a href="#проблема" class="hash-link" aria-label="Прямая ссылка на Проблема" title="Прямая ссылка на Проблема" translate="no">​</a></h3>
+<p>Маленьким компаниям, командам и преподавателям нужно <strong>быстро запускать обучение</strong> и <strong>контролировать прохождение</strong>: материалы, тестирование, дедлайны, отчётность. На практике обучение расползается по чатам, файлам и формам, а контроль превращается в ручной учёт.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="потребности-и-боли">Потребности и боли<a href="#потребности-и-боли" class="hash-link" aria-label="Прямая ссылка на Потребности и боли" title="Прямая ссылка на Потребности и боли" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Материалы теряются (чат, документы, ссылки в разных местах).</p>
+</li>
+<li class="">
+<p>Непонятен прогресс: непонятно, кто отстаёт и где именно.</p>
+</li>
+<li class="">
+<p>Тесты и результаты раздельно, отчёты собираются вручную.</p>
+</li>
+<li class="">
+<p>Слабая дисциплина: дедлайны и напоминания отсутствуют или не связаны с прогрессом.</p>
+</li>
+<li class="">
+<p>Непонятно, какие уроки сложные и где люди отваливаются.</p>
+</li>
+<li class="">
+<p>Сложно масштабировать: чем больше групп и курсов, тем больше “ручной работы”.</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="текущие-альтернативы">Текущие альтернативы<a href="#текущие-альтернативы" class="hash-link" aria-label="Прямая ссылка на Текущие альтернативы" title="Прямая ссылка на Текущие альтернативы" translate="no">​</a></h3>
+<p><strong>1) Большие LMS для корпораций или вузов:</strong> Moodle, Canvas, Blackboard
+— мощные, но часто избыточные для коротких курсов и требуют настройки и администрирования.</p>
+<p><strong>2) Маркетинговые/коммерческие платформы курсов:</strong> GetCourse, iSpring Learn, Teachbase
+— подходят для продаж/каталогов, но для внутреннего мини-обучения могут быть избыточнее, чем нужно по процессам и стоимости.</p>
+<p><strong>3) Платформы для классов/простого обучения:</strong> Google Classroom
+— проще, но не всегда закрывает гибкую отчётность и управление группами под задачи организации.</p>
+<p><strong>4) “Конструктор из инструментов”:</strong> Notion/Docs + Forms + таблицы + мессенджер
+— удобно начать, но возникает разрыв данных и ручной контроль.</p>
+<p><strong>5) Только мессенджеры:</strong> Telegram/Discord
+— отлично для коммуникации, но плохо для управляемого обучения и отчётности.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="почему-эти-решения-недостаточны-для-нашего-фокуса">Почему эти решения недостаточны (для нашего фокуса)<a href="#почему-эти-решения-недостаточны-для-нашего-фокуса" class="hash-link" aria-label="Прямая ссылка на Почему эти решения недостаточны (для нашего фокуса)" title="Прямая ссылка на Почему эти решения недостаточны (для нашего фокуса)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Либо слишком сложно или дорого для мини-курсов и малых команд.</p>
+</li>
+<li class="">
+<p>Либо нет единого места, где есть: урок → тест → попытка → прогресс → отчёт.</p>
+</li>
+<li class="">
+<p>Либо контроль и дисциплина остаются ручными.</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="позиционирование-minilms-на-что-делаем-упор">Позиционирование MiniLMS (на что делаем упор)<a href="#позиционирование-minilms-на-что-делаем-упор" class="hash-link" aria-label="Прямая ссылка на Позиционирование MiniLMS (на что делаем упор)" title="Прямая ссылка на Позиционирование MiniLMS (на что делаем упор)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Минимальный порог входа для автора и координатора.</p>
+</li>
+<li class="">
+<p>Единое место для всех процессов</p>
+</li>
+<li class="">
+<p>Встроенные дедлайны и уведомления, привязанные к прохождению.</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-целевая-аудитория">2. Целевая аудитория<a href="#2-целевая-аудитория" class="hash-link" aria-label="Прямая ссылка на 2. Целевая аудитория" title="Прямая ссылка на 2. Целевая аудитория" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="сегменты-аудитории">Сегменты аудитории<a href="#сегменты-аудитории" class="hash-link" aria-label="Прямая ссылка на Сегменты аудитории" title="Прямая ссылка на Сегменты аудитории" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p><strong>Небольшие компании 10–300 сотрудников:</strong></p>
+<p>продажи, колл-центр, сервис, розница, небольшие команды разработки, которым нужно быстрое обучение и контроль.</p>
+<p><strong>Пример задач:</strong></p>
+<p>онбординг, обучение продукту, стандарты сервиса, продажи, compliance-инструктаж.</p>
+</li>
+<li class="">
+<p><strong>Учебные команды/школы/наставники</strong>, которые делают короткие курсы и хотят видеть результаты.</p>
+<p><strong>Пример задач:</strong></p>
+<p>Нужно быстро собирать курсы и видеть прохождение по группам.</p>
+</li>
+<li class="">
+<p><strong>Сообщества/организации:</strong></p>
+<p>клубы, студенческие команды, НКО.</p>
+<p><strong>Пример задач:</strong></p>
+<p>Нужно обучать участников и фиксировать факт прохождения/результаты.</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="потребности-и-ожидания-по-сегментам">Потребности и ожидания (по сегментам)<a href="#потребности-и-ожидания-по-сегментам" class="hash-link" aria-label="Прямая ссылка на Потребности и ожидания (по сегментам)" title="Прямая ссылка на Потребности и ожидания (по сегментам)" translate="no">​</a></h3>
+<p><strong>Сегмент 1 (компании):</strong></p>
+<ul>
+<li class="">
+<p>Быстро назначить обучение отделу/группе.</p>
+</li>
+<li class="">
+<p>В любой момент видеть, кто прошёл/не прошёл и где задержка.</p>
+</li>
+<li class="">
+<p>Минимизировать ручной сбор статусов.</p>
+</li>
+<li class="">
+<p>Иметь базовый аудит и контроль доступов.</p>
+</li>
+</ul>
+<p><strong>Сегмент 2 (школы/наставники):</strong></p>
+<ul>
+<li class="">
+<p>Собрать курс за короткое время (структура + материалы + тесты).</p>
+</li>
+<li class="">
+<p>Автоматически проверять типовые тесты.</p>
+</li>
+<li class="">
+<p>Получать отчёты по группе без ручной обработки.</p>
+</li>
+</ul>
+<p><strong>Сегмент 3 (сообщества):</strong></p>
+<ul>
+<li class="">
+<p>Простой вход и понятный маршрут “что делать дальше”.</p>
+</li>
+<li class="">
+<p>Фиксация прохождения и базовые результаты.</p>
+</li>
+<li class="">
+<p>Уведомления о дедлайнах/назначениях.</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="потребности-и-ожидания-по-ролям">Потребности и ожидания (по ролям)<a href="#потребности-и-ожидания-по-ролям" class="hash-link" aria-label="Прямая ссылка на Потребности и ожидания (по ролям)" title="Прямая ссылка на Потребности и ожидания (по ролям)" translate="no">​</a></h3>
+<p><strong>Роли внутри продукта</strong></p>
+<ul>
+<li class="">
+<p><strong>Автор/преподаватель</strong> — собирает курс и тесты, смотрит результаты.</p>
+</li>
+<li class="">
+<p><strong>Слушатель</strong> — проходит уроки, сдаёт тесты, видит прогресс.</p>
+</li>
+<li class="">
+<p><strong>Координатор/админ</strong> — назначает курсы, управляет группами, смотрит отчёты.</p>
+</li>
+</ul>
+<p><strong>Ожидания</strong></p>
+<ul>
+<li class="">
+<p>Автор: “собрал курс за вечер, обновил быстро, вижу где людям тяжело”.</p>
+</li>
+<li class="">
+<p>Слушатель: “понятно что делать дальше, минимум кликов, сразу вижу результат”.</p>
+</li>
+<li class="">
+<p>Координатор: “назначил группе и в любой момент вижу статус без ручной работы”.</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-стейкхолдеры">3. Стейкхолдеры<a href="#3-стейкхолдеры" class="hash-link" aria-label="Прямая ссылка на 3. Стейкхолдеры" title="Прямая ссылка на 3. Стейкхолдеры" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ключевые-стейкхолдеры-с-учётом-направленности-продукта">Ключевые стейкхолдеры (с учётом направленности продукта)<a href="#ключевые-стейкхолдеры-с-учётом-направленности-продукта" class="hash-link" aria-label="Прямая ссылка на Ключевые стейкхолдеры (с учётом направленности продукта)" title="Прямая ссылка на Ключевые стейкхолдеры (с учётом направленности продукта)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p><strong>Заказчик/владелец продукта</strong> (инициатор) — приоритеты, принятие результата.</p>
+</li>
+<li class="">
+<p><strong>Координатор обучения / HR</strong> (в компаниях) — организация и проведение обучающих программ</p>
+</li>
+<li class="">
+<p><strong>Автор курса / методолог / преподаватель</strong> — ****содержание, наполнение и структура курса</p>
+</li>
+<li class="">
+<p><strong>Руководители подразделений</strong> — потребители отчётов, требуют дисциплину</p>
+</li>
+<li class="">
+<p><strong>Учащиеся/сотрудники</strong> (конечные пользователи)  — требования к удобству и отчётам.</p>
+</li>
+<li class="">
+<p><strong>Команда разработки</strong> (Frontend/Backend/QA/аналитика)  — оценка сроков, технические решения.</p>
+</li>
+<li class="">
+<p><strong>Эксплуатация/админ инфраструктуры</strong> (если есть деплой) — стабильность, бэкапы, доступы.</p>
+</li>
+<li class="">
+<p><strong>ИБ/юрист (минимально)</strong> — требования к данным, доступам, хранению</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="роль-и-влияние-на-принятие-решений-матрица-власть--интерес">Роль и влияние на принятие решений (матрица “Власть × Интерес”)<a href="#роль-и-влияние-на-принятие-решений-матрица-власть--интерес" class="hash-link" aria-label="Прямая ссылка на Роль и влияние на принятие решений (матрица “Власть × Интерес”)" title="Прямая ссылка на Роль и влияние на принятие решений (матрица “Власть × Интерес”)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p><strong>Заказчик:</strong> власть высокая, интерес высокий → утверждает цели, бюджет, объём MVP.</p>
+</li>
+<li class="">
+<p><strong>Координатор обучения (HR/L&amp;D):</strong> власть высокая, интерес высокий → определяет отчёты, правила назначения, дедлайны.</p>
+</li>
+<li class="">
+<p><strong>Автор/методолог:</strong> власть средняя, интерес высокий → формирует содержание и структуру курса и тестов.</p>
+</li>
+<li class="">
+<p><strong>Руководители подразделений:</strong> власть средняя/высокая, интерес средний → задают требования к дисциплине и форматам отчётов.</p>
+</li>
+<li class="">
+<p><strong>Учащиеся:</strong> власть низкая, интерес высокий → влияют на UX, скорость и понятность.</p>
+</li>
+<li class="">
+<p><strong>Разработка:</strong> власть средняя, интерес высокий → влияет на архитектуру и реалистичность сроков.</p>
+</li>
+<li class="">
+<p><strong>Эксплуатация/ИБ/юрист:</strong> власть средняя, интерес средний → влияет на безопасность, доступы, хранение данных.</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-бизнес-цели-и-ключевые-метрики">4. Бизнес-цели и ключевые метрики<a href="#4-бизнес-цели-и-ключевые-метрики" class="hash-link" aria-label="Прямая ссылка на 4. Бизнес-цели и ключевые метрики" title="Прямая ссылка на 4. Бизнес-цели и ключевые метрики" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="основные-бизнес-цели-smart-согласованы-с-болями">Основные бизнес-цели (SMART, согласованы с болями)<a href="#основные-бизнес-цели-smart-согласованы-с-болями" class="hash-link" aria-label="Прямая ссылка на Основные бизнес-цели (SMART, согласованы с болями)" title="Прямая ссылка на Основные бизнес-цели (SMART, согласованы с болями)" translate="no">​</a></h3>
+<ol>
+<li class="">
+<p><strong>Единое место обучения</strong>
+К концу <strong>20-й недели</strong> MVP обеспечивает “урок → тест → прогресс → отчёт” в одной системе для минимум <strong>1 пилотного курса</strong> и <strong>1 группы</strong>.</p>
+</li>
+<li class="">
+<p><strong>Сокращение ручного контроля</strong>
+Через <strong>4 недели после запуска MVP</strong> координатор тратит на сбор статусов обучения <strong>не более 30 минут в неделю на 1 группу до 50 человек</strong> (измеряется замером времени “до/после”).</p>
+</li>
+<li class="">
+<p><strong>Быстрое создание мини-курса</strong>
+Через <strong>4 недели после запуска MVP</strong> автор создаёт и публикует курс из <strong>5 уроков и 1 теста</strong> не более чем за <strong>2 часа</strong> (по внутреннему замеру на пилоте).</p>
+</li>
+<li class="">
+<p><strong>Дисциплина прохождения</strong>
+Через <strong>4 недели после запуска MVP</strong> доля пользователей, получивших и увидевших уведомления о дедлайне (внутрисистемные), составляет <strong>≥ 80%</strong> среди активных пользователей.</p>
+</li>
+<li class="">
+<p><strong>Стабильная работа MVP</strong>
+В течение <strong>первых 4 недель пилота</strong> доступность системы <strong>≥ 99%</strong> (без учёта плановых работ).</p>
+</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="kpis-только-метрики-успешности-системы-согласованы-с-целями">KPIs (только метрики успешности системы, согласованы с целями)<a href="#kpis-только-метрики-успешности-системы-согласованы-с-целями" class="hash-link" aria-label="Прямая ссылка на KPIs (только метрики успешности системы, согласованы с целями)" title="Прямая ссылка на KPIs (только метрики успешности системы, согласованы с целями)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p><strong>Время координатора на отчётность</strong> (мин/нед/группа) — ключ к цели №2</p>
+</li>
+<li class="">
+<p><strong>Время создания курса автором</strong> (мин/курс) — ключ к цели №3</p>
+</li>
+<li class="">
+<p><strong>Активные пользователи (WAU/MAU)</strong> — подтверждение использования</p>
+</li>
+<li class="">
+<p><strong>Доля назначенных, которые начали курс</strong> (%)</p>
+</li>
+<li class="">
+<p><strong>Доля завершивших курс</strong> (%) — как показатель “система доводит до результата”</p>
+</li>
+<li class="">
+<p><strong>Доля доставленных уведомлений внутри системы</strong> (%) — цель №4</p>
+</li>
+<li class="">
+<p><strong>Доступность (uptime)</strong> (%) — цель №5</p>
+</li>
+<li class="">
+<p><strong>Число обращений в поддержку/на 100 пользователей</strong> — качество продукта</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-описание-продукта">5. Описание продукта<a href="#5-описание-продукта" class="hash-link" aria-label="Прямая ссылка на 5. Описание продукта" title="Прямая ссылка на 5. Описание продукта" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="общая-концепция">Общая концепция<a href="#общая-концепция" class="hash-link" aria-label="Прямая ссылка на Общая концепция" title="Прямая ссылка на Общая концепция" translate="no">​</a></h3>
+<p>MiniLMS объединяет обучение в одном месте:
+автор создаёт курс, слушатель проходит, координатор видит прогресс и отчёты.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ключевые-функции">Ключевые функции<a href="#ключевые-функции" class="hash-link" aria-label="Прямая ссылка на Ключевые функции" title="Прямая ссылка на Ключевые функции" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Аккаунты и роли: слушатель / автор / админ</p>
+</li>
+<li class="">
+<p>Курсы и уроки (структура, материалы, вложения/ссылки).</p>
+</li>
+<li class="">
+<p>Тесты с автопроверкой (несложные типы вопросов)</p>
+</li>
+<li class="">
+<p>Прогресс и статусы прохождения</p>
+</li>
+<li class="">
+<p>Назначение курсов пользователям и группам</p>
+</li>
+<li class="">
+<p>Отчёты по курсу: кто начал/кто завершил/результаты</p>
+</li>
+<li class="">
+<p>Уведомления в системе</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="основные-функции-в-формате-user-story-mvp">Основные функции в формате User Story (MVP)<a href="#основные-функции-в-формате-user-story-mvp" class="hash-link" aria-label="Прямая ссылка на Основные функции в формате User Story (MVP)" title="Прямая ссылка на Основные функции в формате User Story (MVP)" translate="no">​</a></h3>
+<p><strong>US-1 (Координатор):</strong>
+Как координатор, я хочу назначить курс группе, чтобы все участники получили доступ и дедлайн.</p>
+<p><strong>US-2 (Учащийся):</strong>
+Как учащийся, я хочу видеть список назначенных курсов и свой прогресс, чтобы понимать, что делать дальше.</p>
+<p><strong>US-3 (Автор):</strong>
+Как автор, я хочу создать курс из уроков и добавить тесты, чтобы проверить усвоение.</p>
+<p><strong>US-4 (Учащийся):</strong>
+Как учащийся, я хочу пройти тест и сразу увидеть результат, чтобы понимать, зачтено ли.</p>
+<p><strong>US-5 (Координатор):</strong>
+Как координатор, я хочу открыть отчёт по группе, чтобы увидеть кто отстал и на каком этапе.</p>
+<p><strong>US-6 (Система):</strong>
+Как система, я хочу отправлять внутрисистемные уведомления о назначении и приближении дедлайна, чтобы повысить дисциплину.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="кратко-про-ис-фронт--бэк">Кратко про ИС (фронт + бэк)<a href="#кратко-про-ис-фронт--бэк" class="hash-link" aria-label="Прямая ссылка на Кратко про ИС (фронт + бэк)" title="Прямая ссылка на Кратко про ИС (фронт + бэк)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p><strong>Frontend:</strong> веб-интерфейс (личный кабинет, прохождение курса, кабинет автора, админ-панель).</p>
+</li>
+<li class="">
+<p><strong>Backend:</strong> API + бизнес-логика (авторизация, правила прогресса, попытки тестов, отчёты, уведомления).</p>
+</li>
+<li class="">
+<p><strong>Хранилища:</strong> БД для сущностей; файловое хранилище для вложений (MVP — простое).</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-риски-и-стратегии-управления-рисками">6. Риски и стратегии управления рисками<a href="#6-риски-и-стратегии-управления-рисками" class="hash-link" aria-label="Прямая ссылка на 6. Риски и стратегии управления рисками" title="Прямая ссылка на 6. Риски и стратегии управления рисками" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="формат">Формат<a href="#формат" class="hash-link" aria-label="Прямая ссылка на Формат" title="Прямая ссылка на Формат" translate="no">​</a></h3>
+<p>Для каждого риска: <strong>тип → вероятность → влияние → профилактика → действия при срабатывании → владелец</strong>.</p>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="технические">Технические<a href="#технические" class="hash-link" aria-label="Прямая ссылка на Технические" title="Прямая ссылка на Технические" translate="no">​</a></h4>
+<ol>
+<li class="">
+<p><strong>Ошибки прав доступа (RBAC)</strong>
+Вероятность: средняя; влияние: высокое
+Профилактика: матрица ролей, тест-кейсы на доступ, ревью критичных эндпоинтов
+При срабатывании: отключить уязвимый функционал, выпустить фикс, аудит логов
+Владелец: backend + аналитик</p>
+</li>
+<li class="">
+<p><strong>Проблемы производительности при загрузке отчётов</strong>
+Вероятность: средняя; влияние: среднее
+Профилактика: индексы, пагинация, ограничение тяжёлых выборок, кеширование простых отчётов
+При срабатывании: оптимизация запросов, пересчёт отчётов по расписанию
+Владелец: backend</p>
+</li>
+<li class="">
+<p><strong>Потеря данных/ошибки миграций</strong>
+Вероятность: низкая/средняя; влияние: высокое
+Профилактика: бэкапы, миграции через инструмент, тестовый прогон
+При срабатывании: откат миграции, восстановление из бэкапа
+Владелец: эксплуатация/разработка</p>
+</li>
+</ol>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="продуктовые">Продуктовые<a href="#продуктовые" class="hash-link" aria-label="Прямая ссылка на Продуктовые" title="Прямая ссылка на Продуктовые" translate="no">​</a></h4>
+<ol>
+<li class="">
+<p><strong>Слишком сложный интерфейс</strong>
+Вероятность: средняя; влияние: высокое
+Профилактика: прототипы, короткие UX-тесты на 5–7 пользователях пилота
+При срабатывании: упрощение сценариев, сокращение шагов, подсказки
+Владелец: аналитик + frontend</p>
+</li>
+<li class="">
+<p><strong>Недостаточная дисциплина прохождения (уведомления не работают как ожидается)</strong>
+Вероятность: средняя; влияние: среднее
+Профилактика: уведомления внутри системы + понятные дедлайны + напоминания
+При срабатывании: корректировка частоты/текстов уведомлений, добавление “просрочено” статусов
+Владелец: аналитик</p>
+</li>
+</ol>
+<h4 class="anchor anchorTargetStickyNavbar_Vzrq" id="юридическиеиб-минимально">Юридические/ИБ (минимально)<a href="#юридическиеиб-минимально" class="hash-link" aria-label="Прямая ссылка на Юридические/ИБ (минимально)" title="Прямая ссылка на Юридические/ИБ (минимально)" translate="no">​</a></h4>
+<ol>
+<li class=""><strong>Неправильное обращение с персональными данными</strong>
+Вероятность: низкая; влияние: высокое
+Профилактика: минимизация данных, политика хранения, хэш паролей, логирование доступа
+При срабатывании: удаление лишних данных, исправление процессов, уведомление ответственных
+Владелец: заказчик + разработка</li>
+</ol>
+<h1>Границы и ограничения</h1>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-основные-функции-продукта">7. Основные функции продукта<a href="#7-основные-функции-продукта" class="hash-link" aria-label="Прямая ссылка на 7. Основные функции продукта" title="Прямая ссылка на 7. Основные функции продукта" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="будет-реализовано-в-mvp-v1-20-недель">Будет реализовано в MVP (V1, 20 недель)<a href="#будет-реализовано-в-mvp-v1-20-недель" class="hash-link" aria-label="Прямая ссылка на Будет реализовано в MVP (V1, 20 недель)" title="Прямая ссылка на Будет реализовано в MVP (V1, 20 недель)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Регистрация/вход, роли и права (учащийся/автор/координатор/админ).</p>
+</li>
+<li class="">
+<p>Курсы: создание, редактирование, публикация, программа курса.</p>
+</li>
+<li class="">
+<p>Уроки: текст + вложения + ссылки на видео/ресурсы (без встроенного видеохостинга).</p>
+</li>
+<li class="">
+<p>Тесты: 1 ответ / несколько ответов / короткий текст (простая проверка).</p>
+</li>
+<li class="">
+<p>Попытки тестов, проходной балл, фиксация результатов.</p>
+</li>
+<li class="">
+<p>Прогресс по урокам и курсу, статусы (назначен/в процессе/завершён/просрочен).</p>
+</li>
+<li class="">
+<p>Группы пользователей и назначение курса группе/пользователю.</p>
+</li>
+<li class="">
+<p>Отчёты по курсу и группе (кто начал/кто завершил/кто просрочил).</p>
+</li>
+<li class="">
+<p>Внутрисистемные уведомления: назначение, напоминание о дедлайне, просрочка.</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="не-будет-реализовано-в-mvp">Не будет реализовано в MVP<a href="#не-будет-реализовано-в-mvp" class="hash-link" aria-label="Прямая ссылка на Не будет реализовано в MVP" title="Прямая ссылка на Не будет реализовано в MVP" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Платежи/подписки, витрина продаж.</p>
+</li>
+<li class="">
+<p>Встроенный видеохостинг/стриминг (только ссылки).</p>
+</li>
+<li class="">
+<p>Прокторинг/античит “как на экзамене”.</p>
+</li>
+<li class="">
+<p>Нативное мобильное приложение (только адаптивная веб-версия).</p>
+</li>
+<li class="">
+<p>Проверка кода, peer-review, сложные рубрики оценивания.</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="8-версии-продукта-и-план-развития-синхронизировано-с-mvp">8. Версии продукта и план развития (синхронизировано с MVP)<a href="#8-версии-продукта-и-план-развития-синхронизировано-с-mvp" class="hash-link" aria-label="Прямая ссылка на 8. Версии продукта и план развития (синхронизировано с MVP)" title="Прямая ссылка на 8. Версии продукта и план развития (синхронизировано с MVP)" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="v1-mvp-20-недель">V1 (MVP, 20 недель)<a href="#v1-mvp-20-недель" class="hash-link" aria-label="Прямая ссылка на V1 (MVP, 20 недель)" title="Прямая ссылка на V1 (MVP, 20 недель)" translate="no">​</a></h3>
+<p>Базовый контур: курсы/уроки/тесты/назначение/прогресс/отчёты/внутрисистемные уведомления.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="v11-4-недели">V1.1 (4 недели)<a href="#v11-4-недели" class="hash-link" aria-label="Прямая ссылка на V1.1 (4 недели)" title="Прямая ссылка на V1.1 (4 недели)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Email-уведомления (дублирование ключевых событий).</p>
+</li>
+<li class="">
+<p>Экспорт отчётов (CSV).</p>
+</li>
+<li class="">
+<p>Улучшение админки (массовые операции, фильтры).</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="v2-12-месяца">V2 (1–2 месяца)<a href="#v2-12-месяца" class="hash-link" aria-label="Прямая ссылка на V2 (1–2 месяца)" title="Прямая ссылка на V2 (1–2 месяца)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>Домашние задания с ручной проверкой (текст/файл → статус/комментарий/оценка).</p>
+</li>
+<li class="">
+<p>Сертификаты (шаблон + выдача при выполнении условий).</p>
+</li>
+<li class="">
+<p>Банк вопросов (переиспользование между курсами).</p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="v3-дальше">V3 (дальше)<a href="#v3-дальше" class="hash-link" aria-label="Прямая ссылка на V3 (дальше)" title="Прямая ссылка на V3 (дальше)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p>SSO и корпоративные каталоги пользователей (при необходимости).</p>
+</li>
+<li class="">
+<p>Расширенная аналитика по группам (когорты, динамика прохождения).</p>
+</li>
+<li class="">
+<p>Улучшение мобильного опыта без нативного приложения.</p>
+</li>
+<li class="">
+<p>Нативное приложение — <strong>опционально</strong> и только при доказанной необходимости.</p>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="9-ограничения">9. Ограничения<a href="#9-ограничения" class="hash-link" aria-label="Прямая ссылка на 9. Ограничения" title="Прямая ссылка на 9. Ограничения" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="бюджет-детализация">Бюджет (детализация)<a href="#бюджет-детализация" class="hash-link" aria-label="Прямая ссылка на Бюджет (детализация)" title="Прямая ссылка на Бюджет (детализация)" translate="no">​</a></h3>
+<p><strong>Вариант А (учебный пилот, то есть создание команды из студентов, готовых работать ради опыта; минимальные прямые расходы):</strong></p>
+<ul>
+<li class="">
+<p>Инфраструктура (хостинг/БД/домены): <strong>10–30 тыс. ₽</strong> на период разработки и пилота.</p>
+</li>
+<li class="">
+<p>Инструменты (если платные): <strong>0–20 тыс. ₽</strong> (обычно можно обойтись бесплатными).</p>
+</li>
+<li class="">
+<p>Итого прямые расходы: <strong>10–50 тыс. ₽</strong>.</p>
+</li>
+</ul>
+<p><strong>Вариант B (оценка полной стоимости работ, если считать труд по рынку):</strong></p>
+<ul>
+<li class="">
+<p>Аналитика/PM: 1 чел × 0.5 ставки × 20 недель</p>
+</li>
+<li class="">
+<p>Backend: 1 чел × 1 ставка × 14–16 недель</p>
+</li>
+<li class="">
+<p>Frontend: 1 чел × 1 ставка × 12–14 недель</p>
+</li>
+<li class="">
+<p>QA: 0.3 ставки × 6–8 недель</p>
+</li>
+<li class="">
+<p>Итог по труду: зависит от ставок; ориентир для учебного расчёта: <strong>600 тыс. – 1.5 млн ₽</strong></p>
+</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="сроки-и-вехи-mvp--20-недель-без-противоречий">Сроки и вехи (MVP = 20 недель, без противоречий)<a href="#сроки-и-вехи-mvp--20-недель-без-противоречий" class="hash-link" aria-label="Прямая ссылка на Сроки и вехи (MVP = 20 недель, без противоречий)" title="Прямая ссылка на Сроки и вехи (MVP = 20 недель, без противоречий)" translate="no">​</a></h3>
+<ul>
+<li class="">
+<p><strong>Недели 1–2:</strong> уточнение требований, прототипы экранов, модель данных, матрица ролей.</p>
+</li>
+<li class="">
+<p><strong>Недели 3–8:</strong> backend (авторизация, курсы/уроки/тесты, попытки).</p>
+</li>
+<li class="">
+<p><strong>Недели 5–10:</strong> frontend ключевых сценариев + <strong>интеграция фронта и бэка</strong> (явно).</p>
+</li>
+<li class="">
+<p><strong>Недели 11–14:</strong> группы, назначение, отчёты, уведомления.</p>
+</li>
+<li class="">
+<p><strong>Недели 15–16:</strong> стабилизация, тестирование, исправления, нагрузочные проверки “в рамках MVP”.</p>
+</li>
+<li class="">
+<p><strong>Недели 17–20:</strong> пилот (1–3 группы), сбор обратной связи, пакет улучшений, подготовка демо/документации.</p>
+</li>
+</ul>
+<blockquote>
+<p>Вывод на “рынок” для MVP трактуем как <strong>пилот и внедрение в 1–3 группы</strong> (онбординг пользователей, инструкции, поддержка, сбор фидбэка).</p>
+</blockquote>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ресурсы-не-только-люди">Ресурсы (не только люди)<a href="#ресурсы-не-только-люди" class="hash-link" aria-label="Прямая ссылка на Ресурсы (не только люди)" title="Прямая ссылка на Ресурсы (не только люди)" translate="no">​</a></h3>
+<p><strong>Люди:</strong></p>
+<ul>
+<li class="">
+<p>Аналитик (может совмещать PM).</p>
+</li>
+<li class="">
+<p>Backend разработчик.</p>
+</li>
+<li class="">
+<p>Frontend разработчик.</p>
+</li>
+<li class="">
+<p>QA (частично).</p>
+</li>
+</ul>
+<p><strong>ПО и инструменты:</strong></p>
+<ul>
+<li class="">
+<p>Репозиторий и управление задачами (Git + трекер).</p>
+</li>
+<li class="">
+<p>Макеты/прототипы (инструмент для прототипирования).</p>
+</li>
+<li class="">
+<p>Документация (wiki/markdown).</p>
+</li>
+<li class="">
+<p>Тестирование API (Postman/аналог).</p>
+</li>
+<li class="">
+<p>Мониторинг/логирование (минимально).</p>
+</li>
+</ul>
+<p><strong>Инфраструктура:</strong></p>
+<ul>
+<li class="">
+<p>Сервер/контейнеры для backend и frontend.</p>
+</li>
+<li class="">
+<p>База данных.</p>
+</li>
+<li class="">
+<p>Хранилище файлов (минимальное).</p>
+</li>
+<li class="">
+<p>Бэкапы и доступы.</p>
+</li>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Страница документа"><a class="pagination-nav__link pagination-nav__link--prev" href="/minilms-docs/intro"><div class="pagination-nav__sublabel">Предыдущая страница</div><div class="pagination-nav__label">Введение</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/minilms-docs/requirements/functional"><div class="pagination-nav__sublabel">Следующая страница</div><div class="pagination-nav__label">Функциональные требования</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#1-описание-проблемы" class="table-of-contents__link toc-highlight">1. Описание проблемы</a><ul><li><a href="#проблема" class="table-of-contents__link toc-highlight">Проблема</a></li><li><a href="#потребности-и-боли" class="table-of-contents__link toc-highlight">Потребности и боли</a></li><li><a href="#текущие-альтернативы" class="table-of-contents__link toc-highlight">Текущие альтернативы</a></li><li><a href="#почему-эти-решения-недостаточны-для-нашего-фокуса" class="table-of-contents__link toc-highlight">Почему эти решения недостаточны (для нашего фокуса)</a></li><li><a href="#позиционирование-minilms-на-что-делаем-упор" class="table-of-contents__link toc-highlight">Позиционирование MiniLMS (на что делаем упор)</a></li></ul></li><li><a href="#2-целевая-аудитория" class="table-of-contents__link toc-highlight">2. Целевая аудитория</a><ul><li><a href="#сегменты-аудитории" class="table-of-contents__link toc-highlight">Сегменты аудитории</a></li><li><a href="#потребности-и-ожидания-по-сегментам" class="table-of-contents__link toc-highlight">Потребности и ожидания (по сегментам)</a></li><li><a href="#потребности-и-ожидания-по-ролям" class="table-of-contents__link toc-highlight">Потребности и ожидания (по ролям)</a></li></ul></li><li><a href="#3-стейкхолдеры" class="table-of-contents__link toc-highlight">3. Стейкхолдеры</a><ul><li><a href="#ключевые-стейкхолдеры-с-учётом-направленности-продукта" class="table-of-contents__link toc-highlight">Ключевые стейкхолдеры (с учётом направленности продукта)</a></li><li><a href="#роль-и-влияние-на-принятие-решений-матрица-власть--интерес" class="table-of-contents__link toc-highlight">Роль и влияние на принятие решений (матрица “Власть × Интерес”)</a></li></ul></li><li><a href="#4-бизнес-цели-и-ключевые-метрики" class="table-of-contents__link toc-highlight">4. Бизнес-цели и ключевые метрики</a><ul><li><a href="#основные-бизнес-цели-smart-согласованы-с-болями" class="table-of-contents__link toc-highlight">Основные бизнес-цели (SMART, согласованы с болями)</a></li><li><a href="#kpis-только-метрики-успешности-системы-согласованы-с-целями" class="table-of-contents__link toc-highlight">KPIs (только метрики успешности системы, согласованы с целями)</a></li></ul></li><li><a href="#5-описание-продукта" class="table-of-contents__link toc-highlight">5. Описание продукта</a><ul><li><a href="#общая-концепция" class="table-of-contents__link toc-highlight">Общая концепция</a></li><li><a href="#ключевые-функции" class="table-of-contents__link toc-highlight">Ключевые функции</a></li><li><a href="#основные-функции-в-формате-user-story-mvp" class="table-of-contents__link toc-highlight">Основные функции в формате User Story (MVP)</a></li><li><a href="#кратко-про-ис-фронт--бэк" class="table-of-contents__link toc-highlight">Кратко про ИС (фронт + бэк)</a></li></ul></li><li><a href="#6-риски-и-стратегии-управления-рисками" class="table-of-contents__link toc-highlight">6. Риски и стратегии управления рисками</a><ul><li><a href="#формат" class="table-of-contents__link toc-highlight">Формат</a></li></ul></li><li><a href="#7-основные-функции-продукта" class="table-of-contents__link toc-highlight">7. Основные функции продукта</a><ul><li><a href="#будет-реализовано-в-mvp-v1-20-недель" class="table-of-contents__link toc-highlight">Будет реализовано в MVP (V1, 20 недель)</a></li><li><a href="#не-будет-реализовано-в-mvp" class="table-of-contents__link toc-highlight">Не будет реализовано в MVP</a></li></ul></li><li><a href="#8-версии-продукта-и-план-развития-синхронизировано-с-mvp" class="table-of-contents__link toc-highlight">8. Версии продукта и план развития (синхронизировано с MVP)</a><ul><li><a href="#v1-mvp-20-недель" class="table-of-contents__link toc-highlight">V1 (MVP, 20 недель)</a></li><li><a href="#v11-4-недели" class="table-of-contents__link toc-highlight">V1.1 (4 недели)</a></li><li><a href="#v2-12-месяца" class="table-of-contents__link toc-highlight">V2 (1–2 месяца)</a></li><li><a href="#v3-дальше" class="table-of-contents__link toc-highlight">V3 (дальше)</a></li></ul></li><li><a href="#9-ограничения" class="table-of-contents__link toc-highlight">9. Ограничения</a><ul><li><a href="#бюджет-детализация" class="table-of-contents__link toc-highlight">Бюджет (детализация)</a></li><li><a href="#сроки-и-вехи-mvp--20-недель-без-противоречий" class="table-of-contents__link toc-highlight">Сроки и вехи (MVP = 20 недель, без противоречий)</a></li><li><a href="#ресурсы-не-только-люди" class="table-of-contents__link toc-highlight">Ресурсы (не только люди)</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">MiniLMS Documentation © 2026</div></div></div></footer></div>
+</body>
+</html>

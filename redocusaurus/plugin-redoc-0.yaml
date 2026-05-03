@@ -1,0 +1,1538 @@
+openapi: 3.0.3
+info:
+  title: MiniLMS API
+  description: |
+    Спецификация REST API платформы MiniLMS — системы для создания мини-курсов,
+    назначения их группам пользователей и отслеживания прогресса прохождения.
+
+    API покрывает экраны и сценарии:
+    - Слушатель: список назначенных курсов, прохождение уроков, сдача тестов
+    - Автор: создание и редактирование курсов, уроков, тестов, публикация
+    - Координатор: управление группами, назначение курсов, просмотр отчётов
+
+    Все защищённые эндпоинты требуют Bearer-токен в заголовке Authorization.
+    Права доступа определяются ролью пользователя (RBAC).
+  version: 1.0.0
+  contact:
+    name: MiniLMS Team
+    email: support@minilms.local
+servers:
+  - url: https://api.minilms.local/v1
+    description: Production
+  - url: https://staging-api.minilms.local/v1
+    description: Staging
+security:
+  - BearerAuth: []
+tags:
+  - name: Auth
+    description: Аутентификация
+  - name: Learner
+    description: Сценарии слушателя (UC-07)
+  - name: Notifications
+    description: Уведомления (UC-09)
+  - name: Author
+    description: Сценарии автора (UC-02, UC-03, UC-04, UC-05)
+  - name: Coordinator
+    description: Сценарии координатора (UC-06, UC-08)
+  - name: Files
+    description: Загрузка файлов
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Вход в систему (UC-01)
+      description: Аутентификация пользователя по email и паролю.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Успешный вход
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Неверные учётные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Аккаунт заблокирован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/me/enrollments:
+    get:
+      tags:
+        - Learner
+      summary: Список назначенных курсов с прогрессом
+      description: Используется на экране "Мои курсы".
+      parameters:
+        - name: status
+          in: query
+          required: false
+          description: Фильтр по статусу прохождения
+          schema:
+            $ref: '#/components/schemas/AssignmentStatus'
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Список назначений с прогрессом
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /courses/{courseId}:
+    get:
+      tags:
+        - Learner
+      summary: Получение курса с программой и прогрессом
+      description: Экран "Прохождение курса" — содержит уроки и статус по каждому.
+      parameters:
+        - $ref: '#/components/parameters/CourseIdPath'
+      responses:
+        '200':
+          description: Курс найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseWithProgress'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /courses/{courseId}/lessons/{lessonId}:
+    get:
+      tags:
+        - Learner
+      summary: Получение контента урока
+      parameters:
+        - $ref: '#/components/parameters/CourseIdPath'
+        - $ref: '#/components/parameters/LessonIdPath'
+      responses:
+        '200':
+          description: Контент урока
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /courses/{courseId}/lessons/{lessonId}/complete:
+    post:
+      tags:
+        - Learner
+      summary: Отметить урок пройденным (для уроков без теста)
+      parameters:
+        - $ref: '#/components/parameters/CourseIdPath'
+        - $ref: '#/components/parameters/LessonIdPath'
+      responses:
+        '200':
+          description: Прогресс обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonProgress'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /tests/{testId}:
+    get:
+      tags:
+        - Learner
+      summary: Получение вопросов теста
+      description: Правильные ответы в ответе не возвращаются.
+      parameters:
+        - $ref: '#/components/parameters/TestIdPath'
+      responses:
+        '200':
+          description: Тест с вопросами для прохождения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestForLearner'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Попытки исчерпаны
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /tests/{testId}/attempts:
+    post:
+      tags:
+        - Learner
+      summary: Отправка попытки теста
+      description: |
+        Отправка ответов учащегося. Заголовок `X-Idempotency-Key` обеспечивает,
+        что повторная отправка (после таймаута) не создаст дубликат попытки.
+      parameters:
+        - $ref: '#/components/parameters/TestIdPath'
+        - name: X-Idempotency-Key
+          in: header
+          required: true
+          description: UUID черновика на клиенте
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitAttemptRequest'
+      responses:
+        '201':
+          description: Попытка зафиксирована, результат рассчитан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttemptResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Лимит попыток исчерпан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /notifications:
+    get:
+      tags:
+        - Notifications
+      summary: Список уведомлений пользователя
+      parameters:
+        - name: unread
+          in: query
+          required: false
+          description: Только непрочитанные
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Список уведомлений
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationListResponse'
+  /notifications/{notificationId}/read:
+    post:
+      tags:
+        - Notifications
+      summary: Отметить уведомление прочитанным
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Уведомление отмечено прочитанным
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /author/courses:
+    get:
+      tags:
+        - Author
+      summary: Список курсов автора
+      responses:
+        '200':
+          description: Курсы автора
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseSummary'
+    post:
+      tags:
+        - Author
+      summary: Создание курса-черновика (UC-02)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCourseRequest'
+      responses:
+        '201':
+          description: Курс создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /author/courses/{courseId}:
+    get:
+      tags:
+        - Author
+      summary: Получение курса для редактирования
+      parameters:
+        - $ref: '#/components/parameters/CourseIdPath'
+      responses:
+        '200':
+          description: Курс
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - Author
+      summary: Обновление курса
+      parameters:
+        - $ref: '#/components/parameters/CourseIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCourseRequest'
+      responses:
+        '200':
+          description: Курс обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+  /author/courses/{courseId}/publish:
+    post:
+      tags:
+        - Author
+      summary: Публикация курса (UC-05)
+      parameters:
+        - $ref: '#/components/parameters/CourseIdPath'
+      responses:
+        '200':
+          description: Курс опубликован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '409':
+          description: Публикация невозможна (нет уроков)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /author/courses/{courseId}/lessons:
+    post:
+      tags:
+        - Author
+      summary: Добавление урока в курс (UC-03)
+      parameters:
+        - $ref: '#/components/parameters/CourseIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLessonRequest'
+      responses:
+        '201':
+          description: Урок создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+  /author/lessons/{lessonId}:
+    put:
+      tags:
+        - Author
+      summary: Обновление урока (редактирование контента, порядка)
+      parameters:
+        - $ref: '#/components/parameters/LessonIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLessonRequest'
+      responses:
+        '200':
+          description: Урок обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - Author
+      summary: Удаление урока
+      parameters:
+        - $ref: '#/components/parameters/LessonIdPath'
+      responses:
+        '204':
+          description: Урок удалён
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Урок нельзя удалить (есть попытки прохождения)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /author/lessons/{lessonId}/tests:
+    post:
+      tags:
+        - Author
+      summary: Создание теста к уроку (UC-04)
+      parameters:
+        - $ref: '#/components/parameters/LessonIdPath'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTestRequest'
+      responses:
+        '201':
+          description: Тест создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+  /courses:
+    get:
+      tags:
+        - Coordinator
+      summary: Каталог опубликованных курсов для назначения
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/CourseStatus'
+      responses:
+        '200':
+          description: Список курсов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseSummary'
+  /groups:
+    get:
+      tags:
+        - Coordinator
+      summary: Список групп координатора
+      responses:
+        '200':
+          description: Группы
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+    post:
+      tags:
+        - Coordinator
+      summary: Создание группы
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupRequest'
+      responses:
+        '201':
+          description: Группа создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+  /assignments:
+    post:
+      tags:
+        - Coordinator
+      summary: Назначение курса группе (UC-06)
+      description: |
+        Создаёт назначения курса всем участникам группы атомарно.
+        Если часть участников уже имеет назначение, возвращает информацию
+        о количестве созданных и пропущенных назначений.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssignmentRequest'
+      responses:
+        '201':
+          description: Назначения созданы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAssignmentResponse'
+        '400':
+          description: |
+            Ошибки валидации:
+            - A1: группа пустая
+            - A2: дедлайн раньше даты старта
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: A3 — курс уже назначен всем участникам группы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /reports:
+    get:
+      tags:
+        - Coordinator
+      summary: Отчёт по курсу и группе (UC-08)
+      description: Табличный отчёт с пагинацией по 50 строк.
+      parameters:
+        - name: courseId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: groupId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/AssignmentStatus'
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        '200':
+          description: Отчёт с пагинацией
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+  /reports/summary:
+    get:
+      tags:
+        - Coordinator
+      summary: Агрегаты по отчёту (для плашек вверху экрана)
+      parameters:
+        - name: courseId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: groupId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Сводка по статусам
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportSummary'
+  /files/upload:
+    post:
+      tags:
+        - Files
+      summary: Загрузка вложения (для уроков)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Файл загружен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+        '413':
+          description: Файл превышает лимит размера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    CourseIdPath:
+      name: courseId
+      in: path
+      required: true
+      description: Идентификатор курса
+      schema:
+        type: string
+        format: uuid
+    LessonIdPath:
+      name: lessonId
+      in: path
+      required: true
+      description: Идентификатор урока
+      schema:
+        type: string
+        format: uuid
+    TestIdPath:
+      name: testId
+      in: path
+      required: true
+      description: Идентификатор теста
+      schema:
+        type: string
+        format: uuid
+  responses:
+    Unauthorized:
+      description: Требуется аутентификация
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Недостаточно прав
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Некорректные входные данные
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    UserRole:
+      type: string
+      description: Роль пользователя в системе
+      enum:
+        - learner
+        - author
+        - coordinator
+        - admin
+    CourseStatus:
+      type: string
+      description: Статус курса
+      enum:
+        - draft
+        - published
+    AssignmentStatus:
+      type: string
+      description: Статус прохождения назначенного курса
+      enum:
+        - assigned
+        - in_progress
+        - completed
+        - overdue
+    QuestionType:
+      type: string
+      description: Тип вопроса в тесте
+      enum:
+        - single_choice
+        - multiple_choice
+        - short_text
+    NotificationType:
+      type: string
+      description: Тип уведомления
+      enum:
+        - course_assigned
+        - deadline_soon
+        - overdue
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - fullName
+        - role
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+          example: Иванов Иван Иванович
+        role:
+          $ref: '#/components/schemas/UserRole'
+    Attachment:
+      type: object
+      required:
+        - id
+        - fileName
+        - url
+        - sizeBytes
+      properties:
+        id:
+          type: string
+          format: uuid
+        fileName:
+          type: string
+          example: handbook.pdf
+        url:
+          type: string
+          format: uri
+        sizeBytes:
+          type: integer
+          example: 1048576
+        mimeType:
+          type: string
+          example: application/pdf
+    CourseSummary:
+      type: object
+      description: Краткая информация о курсе (для каталогов и списков)
+      required:
+        - id
+        - title
+        - status
+        - lessonCount
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+          example: Онбординг новых сотрудников
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/CourseStatus'
+        lessonCount:
+          type: integer
+          example: 5
+        authorId:
+          type: string
+          format: uuid
+    Course:
+      type: object
+      description: Полная структура курса с уроками
+      required:
+        - id
+        - title
+        - status
+        - lessons
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/CourseStatus'
+        authorId:
+          type: string
+          format: uuid
+        lessons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lesson'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Lesson:
+      type: object
+      required:
+        - id
+        - courseId
+        - title
+        - order
+      properties:
+        id:
+          type: string
+          format: uuid
+        courseId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          example: Введение в компанию
+        content:
+          type: string
+          description: HTML/Markdown-контент урока
+        order:
+          type: integer
+          example: 1
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+        externalLinks:
+          type: array
+          items:
+            type: string
+            format: uri
+        testId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Если к уроку привязан тест
+    Test:
+      type: object
+      description: Тест с вопросами и правильными ответами (для автора)
+      required:
+        - id
+        - lessonId
+        - passingScore
+        - questions
+      properties:
+        id:
+          type: string
+          format: uuid
+        lessonId:
+          type: string
+          format: uuid
+        passingScore:
+          type: integer
+          description: Минимальный балл для зачёта
+          example: 7
+        maxAttempts:
+          type: integer
+          nullable: true
+          example: 3
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+    TestForLearner:
+      type: object
+      description: Тест без правильных ответов (для учащегося)
+      required:
+        - id
+        - passingScore
+        - questions
+        - attemptsLeft
+      properties:
+        id:
+          type: string
+          format: uuid
+        passingScore:
+          type: integer
+        maxAttempts:
+          type: integer
+          nullable: true
+          description: Общий лимит попыток (null — без ограничений)
+          example: 3
+        attemptsLeft:
+          type: integer
+          description: Сколько попыток осталось
+          example: 2
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionForLearner'
+    Question:
+      type: object
+      required:
+        - id
+        - type
+        - text
+        - points
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/QuestionType'
+        text:
+          type: string
+          example: Как часто нужно менять пароль?
+        points:
+          type: integer
+          example: 1
+        options:
+          type: array
+          description: Варианты ответа (для single_choice и multiple_choice)
+          items:
+            $ref: '#/components/schemas/Option'
+        correctTextAnswer:
+          type: string
+          nullable: true
+          description: Правильный ответ для short_text (без учёта регистра)
+    QuestionForLearner:
+      type: object
+      description: Вопрос без правильных ответов
+      required:
+        - id
+        - type
+        - text
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/QuestionType'
+        text:
+          type: string
+        options:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - text
+            properties:
+              id:
+                type: string
+                format: uuid
+              text:
+                type: string
+    Option:
+      type: object
+      description: Вариант ответа
+      required:
+        - id
+        - text
+        - isCorrect
+      properties:
+        id:
+          type: string
+          format: uuid
+        text:
+          type: string
+          example: Каждые 90 дней
+        isCorrect:
+          type: boolean
+    SubmitAttemptRequest:
+      type: object
+      required:
+        - answers
+      properties:
+        answers:
+          type: array
+          description: Ответы учащегося на вопросы теста
+          items:
+            $ref: '#/components/schemas/AttemptAnswer'
+    AttemptAnswer:
+      type: object
+      required:
+        - questionId
+      properties:
+        questionId:
+          type: string
+          format: uuid
+        selectedOptionIds:
+          type: array
+          description: Для single_choice и multiple_choice
+          items:
+            type: string
+            format: uuid
+        textAnswer:
+          type: string
+          description: Для short_text
+          example: в службу безопасности
+    AttemptResult:
+      type: object
+      required:
+        - attemptId
+        - score
+        - maxScore
+        - passed
+        - submittedAt
+      properties:
+        attemptId:
+          type: string
+          format: uuid
+        score:
+          type: integer
+          example: 8
+        maxScore:
+          type: integer
+          example: 10
+        passed:
+          type: boolean
+        submittedAt:
+          type: string
+          format: date-time
+        attemptsLeft:
+          type: integer
+          example: 1
+    Group:
+      type: object
+      required:
+        - id
+        - name
+        - memberCount
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: Отдел продаж
+        memberCount:
+          type: integer
+          example: 12
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    CreateGroupRequest:
+      type: object
+      required:
+        - name
+        - memberIds
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        memberIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    CreateAssignmentRequest:
+      type: object
+      required:
+        - courseId
+        - groupId
+      properties:
+        courseId:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date
+          nullable: true
+        deadline:
+          type: string
+          format: date
+          nullable: true
+    CreateAssignmentResponse:
+      type: object
+      required:
+        - created
+        - skipped
+      properties:
+        created:
+          type: integer
+          description: Количество новых назначений
+          example: 10
+        skipped:
+          type: integer
+          description: Количество пропущенных (уже существовали)
+          example: 2
+        assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssignmentSummary'
+    AssignmentSummary:
+      type: object
+      required:
+        - id
+        - userId
+        - courseId
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        courseId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/AssignmentStatus'
+        deadline:
+          type: string
+          format: date
+          nullable: true
+    Enrollment:
+      type: object
+      description: Назначение курса с прогрессом (для экрана "Мои курсы")
+      required:
+        - assignmentId
+        - course
+        - status
+        - progress
+      properties:
+        assignmentId:
+          type: string
+          format: uuid
+        course:
+          $ref: '#/components/schemas/CourseSummary'
+        status:
+          $ref: '#/components/schemas/AssignmentStatus'
+        progress:
+          $ref: '#/components/schemas/ProgressSummary'
+        startDate:
+          type: string
+          format: date
+          nullable: true
+        deadline:
+          type: string
+          format: date
+          nullable: true
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+    ProgressSummary:
+      type: object
+      description: Сводка прогресса по курсу
+      required:
+        - completedLessons
+        - totalLessons
+        - percent
+      properties:
+        completedLessons:
+          type: integer
+          example: 3
+        totalLessons:
+          type: integer
+          example: 5
+        percent:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 60
+    EnrollmentListResponse:
+      type: object
+      required:
+        - items
+        - total
+        - page
+        - size
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        total:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+    CourseWithProgress:
+      type: object
+      description: Курс с прогрессом учащегося по каждому уроку
+      required:
+        - id
+        - title
+        - lessons
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        deadline:
+          type: string
+          format: date
+          nullable: true
+        progress:
+          $ref: '#/components/schemas/ProgressSummary'
+        lessons:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Lesson'
+              - type: object
+                properties:
+                  lessonStatus:
+                    type: string
+                    enum:
+                      - not_started
+                      - in_progress
+                      - completed
+                  lastAttempt:
+                    $ref: '#/components/schemas/AttemptResult'
+    LessonProgress:
+      type: object
+      required:
+        - lessonId
+        - status
+      properties:
+        lessonId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - not_started
+            - in_progress
+            - completed
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+    ReportResponse:
+      type: object
+      required:
+        - rows
+        - total
+        - page
+        - size
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportRow'
+        total:
+          type: integer
+        page:
+          type: integer
+        size:
+          type: integer
+    ReportRow:
+      type: object
+      description: Строка табличного отчёта
+      required:
+        - userId
+        - fullName
+        - status
+        - progress
+      properties:
+        userId:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          example: Иванов А.
+        status:
+          $ref: '#/components/schemas/AssignmentStatus'
+        progress:
+          $ref: '#/components/schemas/ProgressSummary'
+        lastTestScore:
+          type: object
+          nullable: true
+          properties:
+            score:
+              type: integer
+            maxScore:
+              type: integer
+        deadline:
+          type: string
+          format: date
+          nullable: true
+    ReportSummary:
+      type: object
+      description: Агрегаты для плашек на экране отчёта
+      required:
+        - assigned
+        - inProgress
+        - completed
+        - overdue
+        - notStarted
+      properties:
+        assigned:
+          type: integer
+          description: Всего назначено
+          example: 12
+        notStarted:
+          type: integer
+          description: Не начали
+          example: 1
+        inProgress:
+          type: integer
+          example: 2
+        completed:
+          type: integer
+          example: 8
+        overdue:
+          type: integer
+          example: 1
+    Notification:
+      type: object
+      required:
+        - id
+        - type
+        - title
+        - createdAt
+        - read
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/NotificationType'
+        title:
+          type: string
+          example: Вам назначен курс
+        message:
+          type: string
+          example: Курс «Онбординг» назначен, дедлайн 25.04.2026
+        courseId:
+          type: string
+          format: uuid
+          nullable: true
+        read:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+    NotificationListResponse:
+      type: object
+      required:
+        - items
+        - unreadCount
+        - total
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        unreadCount:
+          type: integer
+          example: 3
+        total:
+          type: integer
+    CreateCourseRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          example: Онбординг новых сотрудников
+        description:
+          type: string
+          maxLength: 2000
+        category:
+          type: string
+    UpdateCourseRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        category:
+          type: string
+    CreateLessonRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: string
+        order:
+          type: integer
+        externalLinks:
+          type: array
+          items:
+            type: string
+            format: uri
+        attachmentIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    UpdateLessonRequest:
+      type: object
+      description: Все поля опциональны — обновляются только переданные
+      properties:
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: string
+        order:
+          type: integer
+        externalLinks:
+          type: array
+          items:
+            type: string
+            format: uri
+        attachmentIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    CreateTestRequest:
+      type: object
+      required:
+        - passingScore
+        - questions
+      properties:
+        passingScore:
+          type: integer
+          minimum: 0
+        maxAttempts:
+          type: integer
+          minimum: 1
+          nullable: true
+        questions:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/CreateQuestionRequest'
+    CreateQuestionRequest:
+      type: object
+      required:
+        - type
+        - text
+        - points
+      properties:
+        type:
+          $ref: '#/components/schemas/QuestionType'
+        text:
+          type: string
+          minLength: 1
+        points:
+          type: integer
+          minimum: 1
+        options:
+          type: array
+          items:
+            type: object
+            required:
+              - text
+              - isCorrect
+            properties:
+              text:
+                type: string
+              isCorrect:
+                type: boolean
+        correctTextAnswer:
+          type: string
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: ivanov@company.ru
+        password:
+          type: string
+          format: password
+    LoginResponse:
+      type: object
+      required:
+        - token
+        - user
+      properties:
+        token:
+          type: string
+          description: Bearer-токен для последующих запросов
+        expiresIn:
+          type: integer
+          description: Срок жизни токена в секундах
+          example: 3600
+        user:
+          $ref: '#/components/schemas/User'
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: Дедлайн раньше даты старта
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              issue:
+                type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

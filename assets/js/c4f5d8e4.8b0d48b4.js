@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkminilms_temp=globalThis.webpackChunkminilms_temp||[]).push([[634],{192(i,s,n){n.r(s),n.d(s,{default:()=>m});var t=n(6347),l=n(4848);function m(){return(0,l.jsx)(t.rd,{to:"/minilms-docs/intro"})}}}]);
